@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ISO 9001:2015 — Curso Completo</title>
+<script src="scorm_api.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#1a1a2e;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+
+/* HEADER */
+.top-bar{width:100%;background:#0d1117;border-bottom:1px solid #1e3a5f;padding:10px 20px;display:flex;align-items:center;justify-content:space-between}
+.top-logo{font-size:14px;font-weight:700;color:#fff}.top-logo span{color:#4A90D9}
+.top-unit{font-size:12px;color:#4b6a8a;font-weight:600}
+.top-prog{display:flex;align-items:center;gap:8px}
+.top-pbar{width:120px;height:4px;background:#1e2a3a;border-radius:99px}
+.top-pfill{height:100%;background:#4A90D9;border-radius:99px;transition:width 0.4s}
+.top-pct{font-size:11px;color:#4A90D9;font-weight:700}
+
+/* VIEWER */
+.viewer{width:100%;max-width:900px;margin:0 auto;padding:16px 16px 0;position:relative}
+
+/* SLIDE DISPLAY */
+.slide-display{position:relative;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);min-height:460px;display:flex;align-items:stretch}
+
+/* ARROW BUTTONS */
+.arr-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:50;width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,0.55);border:1.5px solid rgba(255,255,255,0.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;backdrop-filter:blur(4px)}
+.arr-btn:hover{background:rgba(74,144,217,0.8);border-color:#4A90D9}
+.arr-btn:disabled{opacity:0.2;cursor:default}
+.arr-btn.left{left:-22px}
+.arr-btn.right{right:-22px}
+
+/* SLIDES */
+.slide{display:none;width:100%;animation:sldIn 0.35s both;flex-direction:column}
+.slide.on{display:flex}
+@keyframes sldIn{0%{opacity:0;transform:translateX(24px)}100%{opacity:1;transform:translateX(0)}}
+@keyframes sldInR{0%{opacity:0;transform:translateX(-24px)}100%{opacity:1;transform:translateX(0)}}
+.slide.rev{animation:sldInR 0.35s both}
+
+/* SLIDE TYPES */
+
+/* PORTADA */
+.sl-portada{background:#1B3F6E;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;min-height:460px}
+.sl-portada-badge{background:rgba(74,144,217,0.25);border:1px solid #4A90D9;color:#7EB8F7;font-size:12px;font-weight:700;padding:5px 18px;border-radius:99px;letter-spacing:1px;margin-bottom:20px;display:inline-block}
+.sl-portada-title{font-size:32px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:12px}
+.sl-portada-title span{color:#4A90D9}
+.sl-portada-sub{font-size:15px;color:#B8D4F0;line-height:1.65;max-width:480px;margin:0 auto 28px}
+.sl-portada-units{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:32px}
+.sl-pu{background:rgba(255,255,255,0.07);border:1px solid rgba(74,144,217,0.35);border-radius:10px;padding:10px 16px;text-align:left}
+.sl-pu-n{font-size:11px;color:#7EB8F7;font-weight:700;margin-bottom:2px}
+.sl-pu-t{font-size:13px;color:#fff;font-weight:500}
+.sl-portada-info{font-size:12px;color:#4b6a8a;display:flex;gap:20px;justify-content:center}
+
+/* INTRO UNIDAD */
+.sl-intro{background:#1B3F6E;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 32px;min-height:460px}
+.sl-intro-line{display:flex;align-items:center;width:100%;max-width:440px;margin-bottom:36px}
+.sl-intro-bar{height:3px;background:#4A90D9;flex:1}
+.sl-intro-num{width:72px;height:72px;border-radius:50%;background:#4A90D9;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff;flex-shrink:0}
+.sl-intro-dot{width:14px;height:14px;border-radius:50%;background:#4A90D9;flex-shrink:0}
+.sl-intro-body{display:flex;align-items:center;gap:24px;max-width:500px;width:100%}
+.sl-intro-ico{width:110px;height:110px;border-radius:50%;background:rgba(74,144,217,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sl-intro-text .lbl{font-size:12px;color:#7EB8F7;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.sl-intro-text h2{font-size:24px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:8px}
+.sl-intro-text p{font-size:14px;color:#B8D4F0;line-height:1.6}
+.sl-intro-objs{margin-top:24px;max-width:460px;width:100%}
+.sl-intro-objs-t{font-size:11px;color:#7EB8F7;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.sl-intro-obj{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#B8D4F0;line-height:1.5;margin-bottom:6px}
+.sl-intro-obj-chk{width:16px;height:16px;border-radius:50%;background:rgba(74,144,217,0.3);border:1.5px solid #4A90D9;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+/* CONTENIDO */
+.sl-content{flex:1;padding:28px 32px;display:flex;flex-direction:column;min-height:460px}
+.sl-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#4A90D9;margin-bottom:5px}
+.sl-title{font-size:22px;font-weight:800;color:#1B3F6E;margin-bottom:4px;line-height:1.3}
+.sl-sub{font-size:13px;color:#64748b;margin-bottom:14px;line-height:1.5}
+.sl-div{height:3px;width:44px;background:#4A90D9;border-radius:99px;margin-bottom:18px}
+
+.def-box{background:#EBF4FF;border-left:4px solid #4A90D9;border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:14px}
+.def-box p{font-size:13px;color:#1B3F6E;line-height:1.7}
+.def-box strong{color:#185FA5;font-weight:700}
+.hl-box{background:#1B3F6E;border-radius:10px;padding:13px 18px;margin-top:auto}
+.hl-box p{font-size:13px;color:#B8D4F0;line-height:1.65}
+.hl-box strong{color:#7EB8F7;font-weight:700}
+
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.icard{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:11px 13px}
+.icard-n{font-size:20px;font-weight:800;color:#4A90D9;margin-bottom:2px}
+.icard-l{font-size:12px;font-weight:700;color:#1B3F6E;margin-bottom:2px}
+.icard-t{font-size:11px;color:#64748b;line-height:1.5}
+.icard.bl{border-left:3px solid #4A90D9;border-radius:0 10px 10px 0}
+.icard.gl{border-left:3px solid #3B6D11;border-radius:0 10px 10px 0}
+.icard.al{border-left:3px solid #854F0B;border-radius:0 10px 10px 0}
+.icard.rl{border-left:3px solid #A32D2D;border-radius:0 10px 10px 0}
+.icard.pl{border-left:3px solid #534AB7;border-radius:0 10px 10px 0}
+.icard.tl{border-left:3px solid #0F6E56;border-radius:0 10px 10px 0}
+
+.plist{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.pitem{display:flex;align-items:flex-start;gap:10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:9px 12px}
+.pitem-n{width:24px;height:24px;border-radius:50%;background:#4A90D9;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pitem h4{font-size:12px;font-weight:700;color:#1B3F6E;margin-bottom:1px}
+.pitem p{font-size:11px;color:#64748b;line-height:1.45}
+
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.ccard{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:10px 12px}
+.ccard-n{font-size:10px;font-weight:700;color:#4A90D9;margin-bottom:2px;text-transform:uppercase;letter-spacing:0.5px}
+.ccard-t{font-size:12px;font-weight:700;color:#1B3F6E;margin-bottom:2px}
+.ccard-d{font-size:11px;color:#64748b;line-height:1.4}
+
+.pdca-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.pdca-c{border-radius:9px;padding:12px 14px;text-align:center}
+.pdca-c .pl{font-size:12px;font-weight:700;margin-bottom:3px}
+.pdca-c .pt{font-size:11px;line-height:1.45}
+.pP{background:#EBF4FF}.pP .pl{color:#185FA5}
+.pD{background:#EAF3DE}.pD .pl{color:#3B6D11}
+.pC{background:#FAEEDA}.pC .pl{color:#854F0B}
+.pA{background:#FCEBEB}.pA .pl{color:#A32D2D}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.col-h{font-size:13px;font-weight:700;color:#1B3F6E;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid #4A90D9}
+.li{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:#374151;padding:5px 0;border-bottom:1px solid #f1f5f9;line-height:1.45}
+.li:last-child{border-bottom:none}
+.li-d{width:5px;height:5px;border-radius:50%;background:#4A90D9;flex-shrink:0;margin-top:5px}
+
+.sflow{display:flex;flex-direction:column;gap:0;margin-bottom:14px}
+.sfi{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9}
+.sfi:last-child{border-bottom:none}
+.sfi-n{width:28px;height:28px;border-radius:50%;background:#4A90D9;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sfi h4{font-size:12px;font-weight:700;color:#1B3F6E;margin-bottom:2px}
+.sfi p{font-size:11px;color:#64748b;line-height:1.45}
+
+.rtable{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:11px}
+.rtable th{background:#1B3F6E;color:#fff;padding:7px 10px;text-align:left;font-weight:600;font-size:10px}
+.rtable td{padding:7px 10px;border-bottom:1px solid #e2e8f0;color:#374151;line-height:1.45}
+.rtable tr:nth-child(even) td{background:#f8fafc}
+
+.acards{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.acard{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:11px 14px;border-left:4px solid #4A90D9}
+.acard.g{border-left-color:#3B6D11}.acard.a{border-left-color:#854F0B}.acard.r{border-left-color:#A32D2D}
+.acard h4{font-size:12px;font-weight:700;color:#1B3F6E;margin-bottom:3px}
+.acard p{font-size:11px;color:#64748b;line-height:1.45}
+
+.cert-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.cert-c{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:11px 10px;text-align:center}
+.cert-n{width:28px;height:28px;border-radius:50%;background:#4A90D9;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 6px}
+.cert-c h4{font-size:11px;font-weight:700;color:#1B3F6E;margin-bottom:3px}
+.cert-c p{font-size:10px;color:#64748b;line-height:1.35}
+
+.badge-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px}
+.b-bl{background:#EBF4FF;color:#185FA5;border:1px solid #B5D4F4}
+.b-gr{background:#EAF3DE;color:#3B6D11;border:1px solid #C0DD97}
+.b-am{background:#FAEEDA;color:#854F0B;border:1px solid #FAC775}
+.b-rd{background:#FCEBEB;color:#A32D2D;border:1px solid #F7C1C1}
+
+/* QUIZ SLIDE */
+.sl-quiz{flex:1;padding:24px 28px;display:flex;flex-direction:column;min-height:460px;background:#fff}
+.quiz-hdr{background:#1B3F6E;border-radius:10px;padding:16px 20px;margin-bottom:18px}
+.quiz-hdr h2{font-size:16px;font-weight:800;color:#fff;margin-bottom:2px}
+.quiz-hdr p{font-size:12px;color:#7EB8F7}
+.quiz-pbar{height:3px;background:rgba(255,255,255,0.2);border-radius:99px;margin-top:10px}
+.quiz-pbf{height:100%;background:#4A90D9;border-radius:99px;transition:width 0.4s}
+.q-block{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.q-num-lbl{font-size:10px;font-weight:700;color:#4A90D9;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px}
+.q-text{font-size:14px;font-weight:600;color:#1B3F6E;margin-bottom:12px;line-height:1.5}
+.q-opts{display:flex;flex-direction:column;gap:7px}
+.q-opt{display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:9px 13px;cursor:pointer;transition:all 0.2s;font-family:inherit;width:100%;text-align:left}
+.q-opt:hover{border-color:#4A90D9;background:#EBF4FF}
+.q-opt.ok{background:#EAF3DE;border-color:#3B6D11;color:#27500A}
+.q-opt.err{background:#FCEBEB;border-color:#A32D2D;color:#501313}
+.q-opt:disabled{cursor:default}
+.q-ltr{width:22px;height:22px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.q-opt.ok .q-ltr{background:#3B6D11;color:#fff}
+.q-opt.err .q-ltr{background:#A32D2D;color:#fff}
+.q-opt-txt{font-size:12px;color:#374151}
+.q-opt.ok .q-opt-txt,.q-opt.err .q-opt-txt{font-weight:600}
+.q-fb{font-size:11px;margin-top:8px;padding:8px 12px;border-radius:7px;display:none;line-height:1.55}
+.q-fb.on{display:block}
+.q-fb.ok{background:#EAF3DE;color:#27500A;border-left:3px solid #3B6D11}
+.q-fb.err{background:#FCEBEB;color:#501313;border-left:3px solid #A32D2D}
+.qresult{background:#1B3F6E;border-radius:10px;padding:28px 24px;text-align:center;margin-top:auto}
+.qr-pct{font-size:44px;font-weight:800;margin-bottom:4px}
+.qr-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:4px}
+.qr-sub{font-size:13px;color:#B8D4F0;margin-bottom:16px;line-height:1.6}
+.qr-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.qr-btn{background:#4A90D9;color:#fff;border:none;border-radius:99px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.qr-btn:hover{background:#5BA3EC}
+.qr-btn.gh{background:transparent;border:1.5px solid #4A90D9;color:#4A90D9}
+
+/* VIDEO SLIDE */
+.sl-video{background:#0d1117;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 32px;min-height:460px;text-align:center}
+.sl-video-badge{background:rgba(74,144,217,0.2);border:1px solid #4A90D9;color:#7EB8F7;font-size:11px;font-weight:700;padding:4px 16px;border-radius:99px;letter-spacing:1px;margin-bottom:16px;display:inline-block}
+.sl-video-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:20px}
+.sl-video-wrap{width:100%;max-width:720px;border-radius:12px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.7);border:1px solid #1e3a5f;background:#000}
+.sl-video-wrap video{width:100%;display:block;max-height:360px}
+.sl-video-sub{font-size:12px;color:#4b6a8a;margin-top:14px}
+
+/* THUMBNAIL STRIP */
+.thumb-strip{width:100%;max-width:900px;margin:0 auto;padding:10px 16px 16px;overflow-x:auto;display:flex;gap:7px;-webkit-overflow-scrolling:touch}
+.thumb-strip::-webkit-scrollbar{height:3px}
+.thumb-strip::-webkit-scrollbar-track{background:transparent}
+.thumb-strip::-webkit-scrollbar-thumb{background:#1e3a5f;border-radius:99px}
+.thumb{flex-shrink:0;width:80px;cursor:pointer;border-radius:6px;overflow:hidden;border:2px solid transparent;transition:all 0.2s;opacity:0.55}
+.thumb:hover{opacity:0.85;border-color:#4A90D9}
+.thumb.on{opacity:1;border-color:#4A90D9;box-shadow:0 0 0 2px rgba(74,144,217,0.4)}
+.thumb-inner{width:80px;height:52px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;text-align:center;line-height:1.3;padding:4px 5px;overflow:hidden}
+.thumb-label{font-size:9px;text-align:center;padding:2px 4px;background:#0d1117;color:#4b6a8a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-logo">ISO <span>9001:2015</span></div>
+  <div class="top-unit" id="topUnit">Portada</div>
+  <div class="top-prog">
+    <div class="top-pbar"><div class="top-pfill" id="topPfill" style="width:0%"></div></div>
+    <span class="top-pct" id="topPct">0%</span>
+  </div>
+</div>
+
+<div class="viewer">
+  <div class="slide-display" id="slideDisplay">
+    <button class="arr-btn left" id="btnL" onclick="go(-1)" disabled>&#8249;</button>
+    <button class="arr-btn right" id="btnR" onclick="go(1)">&#8250;</button>
+    <div id="slideContainer" style="width:100%;display:flex;flex-direction:column"></div>
+  </div>
+</div>
+
+<div class="thumb-strip" id="thumbStrip"></div>
+
+<script>
+var slides = [
+  /* 0 — VIDEO INTRO */
+  {unit:'Introducción', label:'Video', bg:'#0d1117', thumbBg:'#0d1117', thumbColor:'#7EB8F7',
+   render: function() {
+    return '<div class="sl-video">' +
+      '<div class="sl-video-badge">▶ Video Introductorio</div>' +
+      '<div class="sl-video-title">Introducción a ISO 9001:2015</div>' +
+      '<div class="sl-video-wrap">' +
+        '<video controls controlsList="nodownload" preload="metadata">' +
+          '<source src="Introducción_a_ISO_9001_2015_720p_caption.mp4" type="video/mp4">' +
+          'Tu navegador no soporta el elemento de video.' +
+        '</video>' +
+      '</div>' +
+      '<div class="sl-video-sub">Mira el video y luego avanza para comenzar el curso</div>' +
+    '</div>';
+   }},
+
+  /* 1 — PORTADA */
+  {unit:'Portada', label:'Inicio', bg:'#1B3F6E', thumbBg:'#1B3F6E', thumbColor:'#7EB8F7',
+   render: function() {
+    return '<div class="sl-portada">' +
+      '<div class="sl-portada-badge">Norma Internacional</div>' +
+      '<div class="sl-portada-title">ISO <span>9001:2015</span><br>Sistema de Gestión de Calidad</div>' +
+      '<div class="sl-portada-sub">Aprende a implementar y comprender los requisitos del estándar internacional de calidad más reconocido del mundo.</div>' +
+      '<div class="sl-portada-units">' +
+        '<div class="sl-pu"><div class="sl-pu-n">Unidad 1</div><div class="sl-pu-t">Fundamentos y estructura</div></div>' +
+        '<div class="sl-pu"><div class="sl-pu-n">Unidad 2</div><div class="sl-pu-t">Requisitos y planificación</div></div>' +
+        '<div class="sl-pu"><div class="sl-pu-n">Unidad 3</div><div class="sl-pu-t">Auditoría y certificación</div></div>' +
+      '</div>' +
+      '<div class="sl-portada-info"><span>3 Unidades</span><span>15 Slides de contenido</span><span>3 Evaluaciones</span></div>' +
+    '</div>';
+   }},
+
+  /* 1 — INTRO U1 */
+  {unit:'Unidad 1', label:'Intro U1', bg:'#1B3F6E', thumbBg:'#1B3F6E', thumbColor:'#fff',
+   render: function() {
+    return '<div class="sl-intro">' +
+      '<div class="sl-intro-line"><div class="sl-intro-bar"></div><div class="sl-intro-num">1</div><div class="sl-intro-bar"></div><div class="sl-intro-dot"></div></div>' +
+      '<div class="sl-intro-body">' +
+        '<div class="sl-intro-ico"><svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="8" y="6" width="38" height="48" rx="4" fill="#4A90D9" opacity="0.3"/><rect x="8" y="6" width="38" height="48" rx="4" stroke="#7EB8F7" stroke-width="2" fill="none"/><line x1="16" y1="20" x2="38" y2="20" stroke="#7EB8F7" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="28" x2="38" y2="28" stroke="#7EB8F7" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="36" x2="30" y2="36" stroke="#7EB8F7" stroke-width="2" stroke-linecap="round"/><circle cx="48" cy="46" r="10" fill="#1B3F6E" stroke="#4A90D9" stroke-width="2"/><path d="M44 46L47 49L53 43" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '<div class="sl-intro-text"><div class="lbl">Unidad 1</div><h2>Fundamentos de la Norma ISO 9001:2015</h2><p>Conocerás el origen, propósito y estructura de la norma y su impacto en los sistemas de gestión de calidad.</p></div>' +
+      '</div>' +
+      '<div class="sl-intro-objs"><div class="sl-intro-objs-t">Al finalizar podrás:</div>' +
+        chk('Explicar qué es la ISO 9001:2015 y su propósito') +
+        chk('Identificar los 7 principios de gestión de calidad') +
+        chk('Comprender la estructura de cláusulas y el ciclo PDCA') +
+      '</div>' +
+    '</div>';
+   }},
+
+  /* 2 */
+  {unit:'Unidad 1', label:'¿Qué es ISO?', bg:'#fff', thumbBg:'#EBF4FF', thumbColor:'#185FA5',
+   render: function() {
+    return cont('Concepto fundamental','¿Qué es la norma ISO 9001:2015?','',
+      def('La <strong>ISO 9001:2015</strong> es el estándar internacional para los <strong>Sistemas de Gestión de Calidad (SGC)</strong>. Establece los requisitos que debe cumplir una organización para demostrar su capacidad de proporcionar productos y servicios que satisfagan los requisitos del cliente y regulaciones aplicables.') +
+      igrid([
+        {n:'ISO',l:'Organización',t:'Organización Internacional de Normalización. Fundada en 1947, Ginebra, Suiza.'},
+        {n:'9001',l:'Número de norma',t:'Familia ISO 9000 de normas de gestión de calidad.'},
+        {n:'2015',l:'Versión actual',t:'Quinta edición. Incorporó enfoque en riesgos y contexto organizacional.'},
+        {n:'+1M',l:'Certificaciones',t:'Más de 1 millón de organizaciones en más de 170 países.'}
+      ]) +
+      hl('La norma NO dice cómo hacer las cosas — define <strong>QUÉ</strong> debe lograrse. Cada organización diseña su propio sistema adaptado a su contexto.')
+    );
+   }},
+
+  /* 3 */
+  {unit:'Unidad 1', label:'7 Principios', bg:'#fff', thumbBg:'#EAF3DE', thumbColor:'#27500A',
+   render: function() {
+    return cont('Principios de gestión','Los 7 principios de gestión de calidad','Base filosófica sobre la que se construye todo el sistema',
+      plist([
+        {n:'1',h:'Enfoque en el cliente',p:'Satisfacer los requisitos del cliente y superar sus expectativas es el objetivo central.'},
+        {n:'2',h:'Liderazgo',p:'Los líderes establecen unidad de propósito y crean condiciones para lograr los objetivos.'},
+        {n:'3',h:'Compromiso de las personas',p:'Personas competentes y empoderadas en toda la organización mejoran la creación de valor.'},
+        {n:'4',h:'Enfoque basado en procesos',p:'Resultados predecibles cuando las actividades se gestionan como procesos interrelacionados.'},
+        {n:'5',h:'Mejora continua',p:'La mejora continua del desempeño es un objetivo permanente de toda organización exitosa.'},
+        {n:'6',h:'Toma de decisiones basada en evidencia',p:'Decisiones sustentadas en análisis de datos tienen más probabilidad de generar los resultados esperados.'},
+        {n:'7',h:'Gestión de las relaciones',p:'Gestionar relaciones con partes interesadas para optimizar su impacto en el desempeño.'}
+      ])
+    );
+   }},
+
+  /* 4 */
+  {unit:'Unidad 1', label:'Cláusulas', bg:'#fff', thumbBg:'#f8fafc', thumbColor:'#1B3F6E',
+   render: function() {
+    return cont('Estructura normativa','Estructura de alto nivel — 10 cláusulas','La norma sigue la estructura HLS común a todos los sistemas ISO',
+      cgrid([
+        {n:'Cláusulas 1-3',t:'Introducción',d:'Objeto, campo de aplicación, referencias y términos.'},
+        {n:'Cláusula 4',t:'Contexto',d:'Entorno interno, externo y partes interesadas.'},
+        {n:'Cláusula 5',t:'Liderazgo',d:'Compromiso de la dirección, política de calidad y roles.'},
+        {n:'Cláusula 6',t:'Planificación',d:'Riesgos, oportunidades y objetivos de calidad.'},
+        {n:'Cláusula 7',t:'Apoyo',d:'Recursos, competencia, comunicación y documentación.'},
+        {n:'Cláusula 8',t:'Operación',d:'Control de procesos operacionales y proveedores.'},
+        {n:'Cláusula 9',t:'Evaluación',d:'Seguimiento, auditoría interna y revisión por la dirección.'},
+        {n:'Cláusula 10',t:'Mejora',d:'No conformidades, acciones correctivas y mejora continua.'}
+      ])
+    );
+   }},
+
+  /* 5 */
+  {unit:'Unidad 1', label:'Ciclo PDCA', bg:'#fff', thumbBg:'#f8fafc', thumbColor:'#1B3F6E',
+   render: function() {
+    return cont('Modelo de gestión','El ciclo PDCA — base de la norma','Plan-Do-Check-Act es el motor de la mejora continua',
+      '<div class="pdca-grid">' +
+        '<div class="pdca-c pP"><div class="pl">Plan — Planificar</div><div class="pt">Establecer objetivos del SGC, identificar riesgos y recursos. Cláusulas 6 y 7.</div></div>' +
+        '<div class="pdca-c pD"><div class="pl">Do — Hacer</div><div class="pt">Implementar y ejecutar los procesos operacionales. Cláusula 8.</div></div>' +
+        '<div class="pdca-c pC"><div class="pl">Check — Verificar</div><div class="pt">Monitorear, medir y auditar los procesos. Cláusula 9.</div></div>' +
+        '<div class="pdca-c pA"><div class="pl">Act — Actuar</div><div class="pt">Tomar acciones para mejorar y gestionar no conformidades. Cláusula 10.</div></div>' +
+      '</div>' +
+      hl('La ISO 9001:2015 adopta el <strong>ciclo PDCA en toda su estructura</strong>. El contexto (cláusula 4) y el liderazgo (cláusula 5) son la <strong>base transversal</strong> que sostiene todo el ciclo.')
+    );
+   }},
+
+  /* 6 */
+  {unit:'Unidad 1', label:'Beneficios', bg:'#fff', thumbBg:'#f8fafc', thumbColor:'#1B3F6E',
+   render: function() {
+    return cont('Impacto organizacional','¿Por qué implementar ISO 9001:2015?','Beneficios tangibles para organizaciones de cualquier tamaño y sector',
+      '<div class="igrid">' +
+        '<div class="icard bl"><div class="icard-l">Mayor confianza del cliente</div><div class="icard-t">Demuestra compromiso formal con la calidad. Reduce reclamaciones y aumenta fidelización.</div></div>' +
+        '<div class="icard gl"><div class="icard-l">Eficiencia operacional</div><div class="icard-t">Procesos documentados y controlados. Reducción de errores y costos de no calidad.</div></div>' +
+        '<div class="icard al"><div class="icard-l">Acceso a nuevos mercados</div><div class="icard-t">Muchas licitaciones exigen certificación ISO 9001 como requisito de postulación.</div></div>' +
+        '<div class="icard rl"><div class="icard-l">Gestión proactiva del riesgo</div><div class="icard-t">Identificación y tratamiento anticipado de riesgos que afectan la calidad.</div></div>' +
+        '<div class="icard pl"><div class="icard-l">Cultura de mejora continua</div><div class="icard-t">La organización aprende de sus errores y mejora permanentemente.</div></div>' +
+        '<div class="icard tl"><div class="icard-l">Reconocimiento internacional</div><div class="icard-t">Credencial global reconocida en más de 170 países.</div></div>' +
+      '</div>' +
+      hl('La certificación no es solo un documento — es una <strong>transformación cultural</strong> que impacta en cómo la organización planifica, ejecuta, verifica y mejora.')
+    );
+   }},
+
+  /* 7 — QUIZ U1 */
+  {unit:'Evaluación U1', label:'Quiz U1', bg:'#fff', thumbBg:'#1B3F6E', thumbColor:'#7EB8F7', isQuiz:1},
+
+  /* 8 — INTRO U2 */
+  {unit:'Unidad 2', label:'Intro U2', bg:'#1B3F6E', thumbBg:'#1B3F6E', thumbColor:'#fff',
+   render: function() {
+    return '<div class="sl-intro">' +
+      '<div class="sl-intro-line"><div class="sl-intro-bar"></div><div class="sl-intro-num">2</div><div class="sl-intro-bar"></div><div class="sl-intro-dot"></div></div>' +
+      '<div class="sl-intro-body">' +
+        '<div class="sl-intro-ico"><svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="6" y="16" width="48" height="32" rx="5" fill="#4A90D9" opacity="0.25"/><rect x="6" y="16" width="48" height="32" rx="5" stroke="#7EB8F7" stroke-width="2" fill="none"/><circle cx="30" cy="32" r="9" stroke="#7EB8F7" stroke-width="2" fill="none"/><circle cx="30" cy="32" r="3.5" fill="#4A90D9"/><path d="M20 16L24 8H36L40 16" stroke="#7EB8F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '<div class="sl-intro-text"><div class="lbl">Unidad 2</div><h2>Requisitos, Contexto y Planificación</h2><p>Profundizarás en los requisitos clave: contexto organizacional, liderazgo, gestión de riesgos y planificación del SGC.</p></div>' +
+      '</div>' +
+      '<div class="sl-intro-objs"><div class="sl-intro-objs-t">Al finalizar podrás:</div>' +
+        chk('Analizar el contexto interno y externo de la organización') +
+        chk('Identificar y gestionar riesgos y oportunidades') +
+        chk('Comprender el rol del liderazgo y la planificación en el SGC') +
+      '</div>' +
+    '</div>';
+   }},
+
+  /* 9 */
+  {unit:'Unidad 2', label:'Contexto', bg:'#fff', thumbBg:'#EBF4FF', thumbColor:'#185FA5',
+   render: function() {
+    return cont('Cláusula 4','Contexto de la organización','Entender el entorno es el punto de partida del SGC',
+      '<div class="two-col">' +
+        '<div><div class="col-h">Factores internos</div>' +
+          li('Valores, cultura y conocimiento organizacional') + li('Capacidad de recursos humanos y tecnológicos') +
+          li('Estructura organizacional y procesos clave') + li('Sistemas de información y toma de decisiones') + li('Normas y directrices internas adoptadas') +
+        '</div>' +
+        '<div><div class="col-h">Factores externos</div>' +
+          li('Entorno legal y regulatorio aplicable') + li('Competencia, mercado y tendencias del sector') +
+          li('Factores económicos, sociales y ambientales') + li('Avances tecnológicos que afectan el negocio') + li('Expectativas de partes interesadas clave') +
+        '</div>' +
+      '</div>' +
+      def('<strong>Partes interesadas:</strong> Cualquier persona u organización que pueda afectar o verse afectada por las actividades de la empresa. Ej: clientes, proveedores, empleados, reguladores.') +
+      hl('La <strong>comprensión del contexto</strong> define el alcance del SGC. No existe un sistema universal — cada implementación se adapta al contexto específico.')
+    );
+   }},
+
+  /* 10 */
+  {unit:'Unidad 2', label:'Liderazgo', bg:'#fff', thumbBg:'#f8fafc', thumbColor:'#1B3F6E',
+   render: function() {
+    return cont('Cláusula 5','El rol del liderazgo en el SGC','La alta dirección debe demostrar liderazgo y compromiso activo',
+      sflow([
+        {n:'1',h:'Compromiso de la alta dirección',p:'Asumir la responsabilidad del SGC, integrar sus requisitos en los procesos de negocio y promover el enfoque basado en riesgos.'},
+        {n:'2',h:'Definir la política de calidad',p:'Establecer una política documentada, apropiada al propósito, que incluya compromiso de mejora continua y satisfacción del cliente.'},
+        {n:'3',h:'Asignar roles y responsabilidades',p:'Designar al representante del SGC y asegurarse que cada persona conozca su rol en el sistema de calidad.'},
+        {n:'4',h:'Establecer objetivos de calidad',p:'Definir objetivos medibles, coherentes con la política, monitoreados y comunicados a la organización.'},
+        {n:'5',h:'Revisión por la dirección',p:'Realizar revisiones periódicas del SGC para asegurar su conveniencia, adecuación, eficacia y alineación estratégica.'}
+      ])
+    );
+   }},
+
+  /* 11 */
+  {unit:'Unidad 2', label:'Riesgos', bg:'#fff', thumbBg:'#FAEEDA', thumbColor:'#633806',
+   render: function() {
+    return cont('Cláusula 6','Gestión de riesgos y oportunidades','El pensamiento basado en riesgos es uno de los conceptos más importantes de la versión 2015',
+      '<table class="rtable"><thead><tr><th>Tipo</th><th>Definición</th><th>Acción requerida</th></tr></thead><tbody>' +
+        '<tr><td><strong>Riesgo</strong></td><td>Efecto de la incertidumbre. Puede ser negativo (amenaza) o positivo (oportunidad).</td><td>Identificar, evaluar, tratar y monitorear.</td></tr>' +
+        '<tr><td><strong>Oportunidad</strong></td><td>Circunstancia favorable para mejorar el desempeño o capturar nuevos mercados.</td><td>Evaluar si conviene aprovecharla y planificar cómo.</td></tr>' +
+      '</tbody></table>' +
+      igrid([
+        {n:'1°',l:'Identificar',t:'Inventario de todo lo que podría afectar los objetivos de calidad.'},
+        {n:'2°',l:'Evaluar',t:'Valorar probabilidad de ocurrencia y severidad de consecuencias.'},
+        {n:'3°',l:'Tratar',t:'Establecer controles, contingencias o transferencia del riesgo.'},
+        {n:'4°',l:'Monitorear',t:'Verificar efectividad de acciones y actualizar el registro de riesgos.'}
+      ]) +
+      hl('La norma <strong>no exige una metodología específica</strong>. Se puede usar matrices de riesgo, FMEA, AMFE u otras herramientas según el contexto.')
+    );
+   }},
+
+  /* 12 */
+  {unit:'Unidad 2', label:'Apoyo y Operación', bg:'#fff', thumbBg:'#f8fafc', thumbColor:'#1B3F6E',
+   render: function() {
+    return cont('Cláusulas 7 y 8','Apoyo y control operacional','El combustible y la ejecución del SGC',
+      '<div class="two-col">' +
+        '<div><div class="col-h">Cláusula 7 — Apoyo</div>' +
+          li('Determinar la competencia necesaria para cada rol') +
+          li('La norma 2015 elimina el manual de calidad obligatorio') +
+          li('Solo se documenta lo necesario para el funcionamiento del SGC') +
+          li('Comunicación interna y externa es un requisito explícito') +
+          li('Toma de conciencia de toda la organización') +
+        '</div>' +
+        '<div><div class="col-h">Cláusula 8 — Operación</div>' +
+          li('Planificar y controlar los procesos de producción/servicio') +
+          li('Determinar todos los requisitos del cliente antes de comprometerse') +
+          li('Controlar los proveedores externos que afectan la calidad') +
+          li('Identificar y controlar salidas no conformes') +
+          li('Conservar información documentada como evidencia') +
+        '</div>' +
+      '</div>' +
+      hl('El control de <strong>procesos externalizados</strong> es clave en la versión 2015. La organización sigue siendo <strong>responsable de la calidad</strong> aunque el proceso lo ejecute un proveedor.')
+    );
+   }},
+
+  /* 13 — QUIZ U2 */
+  {unit:'Evaluación U2', label:'Quiz U2', bg:'#fff', thumbBg:'#1B3F6E', thumbColor:'#7EB8F7', isQuiz:2},
+
+  /* 14 — INTRO U3 */
+  {unit:'Unidad 3', label:'Intro U3', bg:'#1B3F6E', thumbBg:'#1B3F6E', thumbColor:'#fff',
+   render: function() {
+    return '<div class="sl-intro">' +
+      '<div class="sl-intro-line"><div class="sl-intro-bar"></div><div class="sl-intro-num">3</div><div class="sl-intro-bar"></div><div class="sl-intro-dot"></div></div>' +
+      '<div class="sl-intro-body">' +
+        '<div class="sl-intro-ico"><svg width="60" height="60" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="22" fill="#4A90D9" opacity="0.2"/><circle cx="30" cy="30" r="22" stroke="#7EB8F7" stroke-width="2" fill="none"/><path d="M20 30L27 37L40 23" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+        '<div class="sl-intro-text"><div class="lbl">Unidad 3</div><h2>Auditoría Interna y Certificación</h2><p>Aprenderás a ejecutar auditorías internas, gestionar no conformidades y el proceso completo de certificación ISO 9001.</p></div>' +
+      '</div>' +
+      '<div class="sl-intro-objs"><div class="sl-intro-objs-t">Al finalizar podrás:</div>' +
+        chk('Planificar y ejecutar una auditoría interna ISO 9001') +
+        chk('Gestionar no conformidades y acciones correctivas') +
+        chk('Describir las etapas del proceso de certificación') +
+      '</div>' +
+    '</div>';
+   }},
+
+  /* 15 */
+  {unit:'Unidad 3', label:'Auditoría Interna', bg:'#fff', thumbBg:'#EAF3DE', thumbColor:'#27500A',
+   render: function() {
+    return cont('Cláusula 9','Auditoría interna del SGC','Herramienta clave para evaluar la conformidad y eficacia del sistema',
+      def('La <strong>auditoría interna</strong> es un proceso sistemático, independiente y documentado para obtener evidencias y evaluarlas objetivamente para determinar el grado de cumplimiento de los criterios de auditoría.') +
+      '<div class="acards">' +
+        '<div class="acard"><h4>¿Qué se audita?</h4><p>El cumplimiento de los requisitos de la norma ISO 9001:2015 y los requisitos del propio SGC de la organización.</p></div>' +
+        '<div class="acard g"><h4>¿Quién audita?</h4><p>Auditores internos capacitados e independientes del área auditada. Pueden ser personas internas o consultores externos.</p></div>' +
+        '<div class="acard a"><h4>¿Con qué frecuencia?</h4><p>A intervalos planificados. Se recomienda al menos una vez al año, cubriendo todo el alcance del SGC.</p></div>' +
+        '<div class="acard r"><h4>¿Qué se documenta?</h4><p>El programa de auditoría, los hallazgos, las no conformidades detectadas y las acciones correctivas propuestas.</p></div>' +
+      '</div>'
+    );
+   }},
+
+  /* 16 */
+  {unit:'Unidad 3', label:'Etapas Auditoría', bg:'#fff', thumbBg:'#f8fafc', thumbColor:'#1B3F6E',
+   render: function() {
+    return cont('Proceso de auditoría','Etapas de una auditoría interna','Proceso estructurado en 5 etapas para garantizar resultados objetivos',
+      sflow([
+        {n:'1',h:'Planificación',p:'Definir el alcance, criterios, objetivos y metodología. Seleccionar al equipo auditor y elaborar el plan.'},
+        {n:'2',h:'Reunión de apertura',p:'Presentar el equipo auditor, confirmar el alcance, establecer canales de comunicación y el cronograma.'},
+        {n:'3',h:'Ejecución',p:'Recopilar evidencias mediante entrevistas, revisión de documentos y observación directa. Documentar hallazgos.'},
+        {n:'4',h:'Reunión de cierre',p:'Presentar hallazgos al área auditada. Confirmar no conformidades y acordar plazos para acciones correctivas.'},
+        {n:'5',h:'Informe y seguimiento',p:'Emitir el informe final de auditoría. Verificar el cierre efectivo de las no conformidades en el plazo acordado.'}
+      ]) +
+      hl('El auditor debe ser <strong>objetivo e independiente</strong> del área auditada. Un auditor que audita su propio trabajo <strong>no cumple los requisitos</strong> de independencia de la norma.')
+    );
+   }},
+
+  /* 17 */
+  {unit:'Unidad 3', label:'No conformidades', bg:'#fff', thumbBg:'#FCEBEB', thumbColor:'#501313',
+   render: function() {
+    return cont('Cláusula 10','No conformidades y acciones correctivas','La gestión de no conformidades es el motor de la mejora continua',
+      '<div class="two-col">' +
+        '<div><div class="col-h">No conformidad</div>' +
+          li('Incumplimiento de un requisito de la norma o del SGC') +
+          li('Puede detectarse en auditorías, quejas o inspecciones') +
+          li('Debe documentarse con evidencia objetiva') +
+          li('Requiere reacción inmediata y análisis de causa raíz') +
+        '</div>' +
+        '<div><div class="col-h">Acción correctiva</div>' +
+          li('Elimina la CAUSA de la no conformidad (no el síntoma)') +
+          li('Apropiada a los efectos de la no conformidad') +
+          li('Incluye responsable, plazo y evidencia de cierre') +
+          li('Se verifica su eficacia antes de cerrarla formalmente') +
+        '</div>' +
+      '</div>' +
+      '<div class="badge-row">' +
+        '<span class="badge b-bl">Análisis de causa raíz</span>' +
+        '<span class="badge b-gr">5 Por qués</span>' +
+        '<span class="badge b-am">Diagrama de Ishikawa</span>' +
+        '<span class="badge b-rd">Árbol de fallas (FTA)</span>' +
+      '</div>' +
+      hl('<strong>Diferencia clave:</strong> La acción correctiva elimina la CAUSA de una no conformidad existente. Las "acciones preventivas" de la norma 2008 fueron absorbidas por el <strong>pensamiento basado en riesgos</strong> de la versión 2015.')
+    );
+   }},
+
+  /* 18 */
+  {unit:'Unidad 3', label:'Certificación', bg:'#fff', thumbBg:'#f8fafc', thumbColor:'#1B3F6E',
+   render: function() {
+    return cont('Proceso de certificación','Cómo obtener la certificación ISO 9001','Proceso estructurado con auditoría externa por organismo acreditado',
+      '<div class="cert-grid">' +
+        certS(1,'Diagnóstico inicial','Evaluar estado actual vs. requisitos de la norma. Identificar brechas.') +
+        certS(2,'Implementación','Diseñar e implementar procesos, documentos y controles del SGC.') +
+        certS(3,'Auditoría interna','Verificar internamente el cumplimiento de todos los requisitos.') +
+        certS(4,'Revisión por la dirección','La dirección revisa el SGC y aprueba proceder a la certificación.') +
+        certS(5,'Auditoría etapa 1','El organismo certificador revisa la documentación y preparación.') +
+        certS(6,'Auditoría etapa 2','Auditoría en sitio para verificar la implementación efectiva.') +
+        certS(7,'Certificación','Si no hay NC mayores, se emite el certificado con vigencia de 3 años.') +
+        certS(8,'Vigilancia anual','Auditorías anuales para verificar el mantenimiento del SGC.') +
+        certS(9,'Recertificación','Al cabo de 3 años, auditoría completa para renovar la certificación.') +
+      '</div>' +
+      hl('El organismo certificador debe estar <strong>acreditado</strong> (IAS, DAkkS, UKAS, etc.). La acreditación garantiza la competencia del organismo para emitir certificados reconocidos internacionalmente.')
+    );
+   }},
+
+  /* 19 — QUIZ U3 */
+  {unit:'Evaluación U3', label:'Quiz U3', bg:'#fff', thumbBg:'#1B3F6E', thumbColor:'#7EB8F7', isQuiz:3}
+];
+
+/* ── HELPERS ── */
+function chk(t){return '<div class="sl-intro-obj"><div class="sl-intro-obj-chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5L4 7L8 3" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'+t+'</div>';}
+function cont(tag,title,sub,body){return '<div class="sl-content"><div class="sl-tag">'+tag+'</div><div class="sl-title">'+title+'</div>'+(sub?'<div class="sl-sub">'+sub+'</div>':'')+'<div class="sl-div"></div>'+body+'</div>';}
+function def(t){return '<div class="def-box"><p>'+t+'</p></div>';}
+function hl(t){return '<div class="hl-box"><p>'+t+'</p></div>';}
+function igrid(items){var h='<div class="igrid">';items.forEach(function(c){h+='<div class="icard"><div class="icard-n">'+c.n+'</div><div class="icard-l">'+c.l+'</div><div class="icard-t">'+c.t+'</div></div>';});return h+'</div>';}
+function plist(items){var h='<div class="plist">';items.forEach(function(c){h+='<div class="pitem"><div class="pitem-n">'+c.n+'</div><div><h4>'+c.h+'</h4><p>'+c.p+'</p></div></div>';});return h+'</div>';}
+function cgrid(items){var h='<div class="cgrid">';items.forEach(function(c){h+='<div class="ccard"><div class="ccard-n">'+c.n+'</div><div class="ccard-t">'+c.t+'</div><div class="ccard-d">'+c.d+'</div></div>';});return h+'</div>';}
+function sflow(items){var h='<div class="sflow">';items.forEach(function(c){h+='<div class="sfi"><div class="sfi-n">'+c.n+'</div><div><h4>'+c.h+'</h4><p>'+c.p+'</p></div></div>';});return h+'</div>';}
+function li(t){return '<div class="li"><div class="li-d"></div><span>'+t+'</span></div>';}
+function certS(n,h,p){return '<div class="cert-c"><div class="cert-n">'+n+'</div><h4>'+h+'</h4><p>'+p+'</p></div>';}
+
+/* ── QUIZ DATA ── */
+var quizData = {
+  1: {qs:[
+    {q:'¿Qué establece la norma ISO 9001:2015?',opts:['El precio de los productos','Los requisitos para un SGC','Los sueldos del personal','El diseño de los procesos'],ans:1,fb:'La ISO 9001:2015 establece los REQUISITOS para un Sistema de Gestión de Calidad, demostrando capacidad de satisfacer al cliente.'},
+    {q:'¿Cuántos principios de gestión de calidad define la norma?',opts:['5','6','7','8'],ans:2,fb:'La norma define 7 principios: enfoque en el cliente, liderazgo, compromiso de las personas, procesos, mejora continua, evidencia y relaciones.'},
+    {q:'¿Qué significa el ciclo PDCA?',opts:['Plan-Design-Control-Audit','Plan-Do-Check-Act','Process-Document-Control-Assess','Plan-Develop-Certify-Audit'],ans:1,fb:'PDCA = Plan (Planificar) - Do (Hacer) - Check (Verificar) - Act (Actuar). Es el motor de la mejora continua.'},
+    {q:'¿A qué organizaciones aplica la ISO 9001:2015?',opts:['Solo a manufactureras','Solo a grandes corporaciones','A organizaciones de cualquier tamaño y sector','Solo a empresas con +50 empleados'],ans:2,fb:'La norma aplica a CUALQUIER organización, independiente de su tamaño, sector o si entrega productos o servicios.'},
+    {q:'¿Cuál es la versión actual de la norma ISO 9001?',opts:['ISO 9001:2000','ISO 9001:2008','ISO 9001:2015','ISO 9001:2020'],ans:2,fb:'La versión vigente es ISO 9001:2015, quinta edición, que incorporó el enfoque en riesgos y la estructura HLS.'}
+  ]},
+  2: {qs:[
+    {q:'¿Qué incluye el "contexto de la organización"?',opts:['Solo factores económicos','Solo procesos internos','Factores internos, externos y partes interesadas','Solo requisitos del cliente'],ans:2,fb:'El contexto incluye FACTORES INTERNOS, FACTORES EXTERNOS y las PARTES INTERESADAS relevantes para el SGC.'},
+    {q:'¿Qué exige la norma a la alta dirección?',opts:['Delegar toda la responsabilidad','Liderazgo y compromiso activo con el SGC','Solo firmar la política de calidad','Contratar un consultor externo'],ans:1,fb:'La norma exige que la ALTA DIRECCIÓN demuestre liderazgo y compromiso ACTIVO, no solo delegando en el jefe de calidad.'},
+    {q:'¿Qué es el "pensamiento basado en riesgos"?',opts:['Un seguro para la empresa','Identificar amenazas y oportunidades que afectan los objetivos del SGC','Calcular el riesgo financiero','Evaluar solo riesgos de seguridad laboral'],ans:1,fb:'Implica IDENTIFICAR, EVALUAR y TRATAR proactivamente tanto amenazas como oportunidades que puedan afectar los objetivos del SGC.'},
+    {q:'¿La norma 2015 exige un "manual de calidad"?',opts:['Sí, siempre','No, lo eliminó como requisito obligatorio','Solo para empresas con +100 empleados','Solo para certificaciones internacionales'],ans:1,fb:'La versión 2015 ELIMINÓ el manual de calidad como documento obligatorio. Solo se requiere lo necesario para el funcionamiento del SGC.'},
+    {q:'¿Qué cubre la cláusula 8 de la norma?',opts:['Los principios de gestión','Los requisitos de auditoría','El control de los procesos operacionales','La política y objetivos de calidad'],ans:2,fb:'La cláusula 8 (Operación) cubre el CONTROL OPERACIONAL: planificación, requisitos del cliente, control de proveedores y salidas no conformes.'}
+  ]},
+  3: {qs:[
+    {q:'¿Cuál es el propósito de una auditoría interna ISO 9001?',opts:['Castigar al personal','Determinar el grado de cumplimiento del SGC','Solo revisar documentación','Preparar para la auditoría externa'],ans:1,fb:'La auditoría interna es un proceso SISTEMÁTICO E INDEPENDIENTE para evaluar el CUMPLIMIENTO y la EFICACIA del SGC mediante evidencias objetivas.'},
+    {q:'¿Cuántas etapas tiene la auditoría de certificación externa?',opts:['Solo una','Dos etapas','Tres etapas','Cuatro etapas'],ans:1,fb:'La auditoría de certificación tiene DOS etapas: Etapa 1 (revisión documental) y Etapa 2 (auditoría en sitio para verificar la implementación).'},
+    {q:'¿Cuál es la diferencia entre no conformidad y acción correctiva?',opts:['Son sinónimos','La NC es el incumplimiento; la AC elimina su causa raíz','La AC es el incumplimiento; la NC es la solución','No hay diferencia'],ans:1,fb:'La NO CONFORMIDAD es el incumplimiento detectado. La ACCIÓN CORRECTIVA elimina la CAUSA RAÍZ para que no se repita.'},
+    {q:'¿Por cuánto tiempo es válido un certificado ISO 9001?',opts:['1 año','2 años','3 años','5 años'],ans:2,fb:'El certificado ISO 9001 tiene vigencia de 3 AÑOS. Durante ese período se realizan auditorías de vigilancia anuales.'},
+    {q:'¿Qué ocurrió con las "acciones preventivas" de la norma 2008?',opts:['Se mantuvieron igual','Se eliminaron completamente','Fueron absorbidas por el pensamiento basado en riesgos','Se convirtieron en correctivas'],ans:2,fb:'En la versión 2015, las acciones preventivas fueron absorbidas por el PENSAMIENTO BASADO EN RIESGOS (cláusula 6).'}
+  ]}
+};
+
+var qState = {1:{answered:{},score:0}, 2:{answered:{},score:0}, 3:{answered:{},score:0}};
+
+function renderQuiz(u) {
+  var d = quizData[u]; var st = qState[u];
+  var answered = Object.keys(st.answered).length;
+  var pct = answered ? Math.round(answered/d.qs.length*100) : 0;
+  var html = '<div class="sl-quiz"><div class="quiz-hdr"><h2>Evaluación — Unidad '+u+'</h2><p>Responde las '+d.qs.length+' preguntas para completar la unidad</p><div class="quiz-pbar"><div class="quiz-pbf" style="width:'+pct+'%"></div></div></div>';
+  if (answered < d.qs.length) {
+    d.qs.forEach(function(q, i) {
+      var ai = st.answered[i];
+      var ltrs = ['A','B','C','D'];
+      html += '<div class="q-block"><div class="q-num-lbl">Pregunta '+(i+1)+' de '+d.qs.length+'</div><div class="q-text">'+q.q+'</div><div class="q-opts">';
+      q.opts.forEach(function(o,j) {
+        var cls='', dis = ai!==undefined?'disabled':'';
+        if(ai!==undefined){cls=j===q.ans?'ok':(j===ai?'err':'');}
+        html+='<button class="q-opt '+cls+'" '+dis+' onclick="ansQ('+u+','+i+','+j+')"><span class="q-ltr">'+ltrs[j]+'</span><span class="q-opt-txt">'+o+'</span></button>';
+      });
+      var fbcls=ai!==undefined?'on '+(ai===q.ans?'ok':'err'):'';
+      html+='</div><div class="q-fb '+fbcls+'">'+(ai!==undefined?(ai===q.ans?'✅ Correcto. ':'❌ Incorrecto. Respuesta correcta: <strong>'+q.opts[q.ans]+'</strong>. ')+q.fb:'')+'</div></div>';
+    });
+  } else {
+    var pctF = Math.round(st.score/d.qs.length*100);
+    var passed = pctF>=70;
+    var col = passed?'#4ade80':pctF>=50?'#fbbf24':'#f87171';
+    html += '<div class="qresult"><div class="qr-pct" style="color:'+col+'">'+pctF+'%</div>' +
+      '<div class="qr-title">'+(passed?'¡Aprobado!':'Necesitas repasar')+'</div>' +
+      '<div class="qr-sub">'+st.score+' de '+d.qs.length+' correctas<br>'+(passed?'¡Superaste el 70%! Excelente trabajo.':'Menos del 70%. Repasa el contenido e intenta de nuevo.')+'</div>' +
+      '<div class="qr-btns"><button class="qr-btn gh" onclick="retryQ('+u+')">Reintentar</button>' +
+      (u<3?'<button class="qr-btn" onclick="jumpToSlide('+nextIntroIdx(u)+')">Unidad '+(u+1)+' &#8594;</button>':'<button class="qr-btn" onclick="jumpToSlide(0)">&#8592; Inicio</button>') +
+      '</div></div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function nextIntroIdx(u){return u===1?9:15;}
+
+function ansQ(u,qi,ai){
+  if(qState[u].answered[qi]!==undefined)return;
+  qState[u].answered[qi]=ai;
+  if(ai===quizData[u].qs[qi].ans)qState[u].score++;
+  renderCurrentSlide();
+  scormTrack();
+}
+function retryQ(u){qState[u]={answered:{},score:0};renderCurrentSlide();}
+
+/* ── NAVIGATION ── */
+var cur = 0;
+var dir = 1;
+
+function jumpToSlide(n) {
+  dir = n > cur ? 1 : -1;
+  cur = n;
+  renderCurrentSlide();
+  updateUI();
+  window.scrollTo(0,0);
+  scormTrack();
+}
+
+function go(d) {
+  var next = cur + d;
+  if(next<0||next>=slides.length)return;
+  dir=d;cur=next;
+  renderCurrentSlide();
+  updateUI();
+  window.scrollTo(0,0);
+  scormTrack();
+}
+
+function scormTrack() {
+  var pct = Math.round(cur / (slides.length - 1) * 100);
+  SCORM.setBookmark(cur);
+  // Calcular score global combinando progreso + quizzes
+  var quizScore = getGlobalQuizScore();
+  var combined = Math.round(pct * 0.4 + quizScore * 0.6);
+  SCORM.setProgress(combined);
+}
+
+function getGlobalQuizScore() {
+  var total = 0, answered = 0;
+  [1,2,3].forEach(function(u) {
+    var d = quizData[u];
+    var st = qState[u];
+    var cnt = Object.keys(st.answered).length;
+    if (cnt === d.qs.length) {
+      total += Math.round(st.score / d.qs.length * 100);
+      answered++;
+    }
+  });
+  return answered > 0 ? Math.round(total / answered) : 0;
+}
+
+function renderCurrentSlide() {
+  var s = slides[cur];
+  var sc = document.getElementById('slideContainer');
+  var html = '';
+  if(s.isQuiz) {
+    html = renderQuiz(s.isQuiz);
+  } else {
+    html = '<div class="slide on'+(dir<0?' rev':'')+'" style="background:'+s.bg+'">'+s.render()+'</div>';
+  }
+  sc.innerHTML = html;
+}
+
+function updateUI() {
+  var s = slides[cur];
+  document.getElementById('btnL').disabled = cur===0;
+  document.getElementById('btnR').disabled = cur===slides.length-1;
+  document.getElementById('topUnit').textContent = s.unit;
+  var pct = Math.round(cur/(slides.length-1)*100);
+  document.getElementById('topPfill').style.width = pct+'%';
+  document.getElementById('topPct').textContent = pct+'%';
+  document.querySelectorAll('.thumb').forEach(function(t,i){t.classList.toggle('on',i===cur);});
+  var el = document.querySelector('.thumb.on');
+  if(el) el.scrollIntoView({block:'nearest',inline:'center'});
+}
+
+/* ── THUMBNAILS ── */
+function buildThumbs() {
+  var strip = document.getElementById('thumbStrip');
+  slides.forEach(function(s,i) {
+    var t = document.createElement('div');
+    t.className = 'thumb'+(i===0?' on':'');
+    var inner = document.createElement('div');
+    inner.className = 'thumb-inner';
+    inner.style.background = s.thumbBg||'#f8fafc';
+    inner.style.color = s.thumbColor||'#1B3F6E';
+    if(s.isQuiz){inner.innerHTML='<div style="font-size:16px;margin-bottom:2px">📝</div><div>Quiz U'+s.isQuiz+'</div>';}
+    else if(i===0){inner.innerHTML='<div style="font-size:16px;margin-bottom:2px">🏠</div><div>Portada</div>';}
+    else{inner.innerHTML='<div>'+s.label+'</div>';}
+    var lbl = document.createElement('div');
+    lbl.className='thumb-label';lbl.textContent=s.unit;
+    t.appendChild(inner);t.appendChild(lbl);
+    t.onclick=(function(n){return function(){jumpToSlide(n);};})(i);
+    strip.appendChild(t);
+  });
+}
+
+buildThumbs();
+renderCurrentSlide();
+updateUI();
+</script>
+</body>
+</html>
